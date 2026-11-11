@@ -14,95 +14,111 @@
   </header>
 
   <nav>
-    <button class="tab on" data-panel="p-insert">Insert</button>
-    <button class="tab" data-panel="p-layout">Layout</button>
-    <button class="tab" data-panel="p-data">Tables &amp; charts</button>
-    <button class="tab" data-panel="p-check">Check</button>
+    <button class="tab on" data-panel="p-el" title="Elements">Elements</button>
+    <button class="tab" data-panel="p-ic" title="Icons">Icons</button>
+    <button class="tab" data-panel="p-lay" title="Layout">Layout</button>
+    <button class="tab" data-panel="p-tools" title="Tools">Tools</button>
+    <button class="tab" data-panel="p-check" title="Brand check">Check</button>
   </nav>
 
-  <section id="p-insert" class="panel on">
-    <details class="opts">
-      <summary>Element options</summary>
-      <label>Sticker text <input id="opt-text" value="DRAFT" /></label>
-      <label>Marker number <input id="opt-n" type="number" min="1" max="99" value="1" /></label>
-      <label>Steps <input id="opt-steps" type="number" min="2" max="8" value="4" /></label>
-      <label>Current step <input id="opt-current" type="number" min="1" max="8" value="1" /></label>
-      <label>Gantt rows <input id="opt-rows" type="number" min="1" max="8" value="4" /></label>
+  <!-- ELEMENTS -->
+  <section id="p-el" class="panel on">
+    <input id="el-search" class="search" type="search" placeholder="Search elements (e.g. harvey, gantt, funnel)" />
+    <div id="el-gallery"></div>
+    <h3>Logo</h3>
+    <div class="tiles">
+      <button class="tile" data-logo="green" title="Deli logo (green, for light slides)"><img src="assets/logo-green.png" alt="" /></button>
+      <button class="tile dark" data-logo="cream" title="Deli logo (cream, for dark slides)"><img src="assets/logo-cream.png" alt="" /></button>
+    </div>
+    <details class="more">
+      <summary>Full slides from the library</summary>
+      <div class="grid">
+        <button data-lib="260">Agenda</button><button data-lib="261">Process</button>
+        <button data-lib="262">Gantt</button><button data-lib="263">2x2 &amp; pyramid</button>
+        <button data-lib="264">Driver tree</button><button data-lib="265">Options &amp; pros/cons</button>
+        <button data-lib="266">Stat cards &amp; KPIs</button><button data-lib="270">Icon set</button>
+        <button data-lib="256">Cover</button><button data-lib="271">Closing</button>
+      </div>
     </details>
-    <div id="elements"></div>
-    <h3>Full slides from the library</h3>
-    <div class="grid">
-      <button data-lib="260">Agenda</button>
-      <button data-lib="261">Process</button>
-      <button data-lib="262">Gantt</button>
-      <button data-lib="263">2x2 &amp; pyramid</button>
-      <button data-lib="264">Driver tree</button>
-      <button data-lib="265">Options &amp; pros/cons</button>
-      <button data-lib="266">Stat cards &amp; KPIs</button>
-      <button data-lib="270">Icons</button>
-      <button data-lib="256">Cover</button>
-      <button data-lib="271">Closing</button>
-    </div>
   </section>
 
-  <section id="p-layout" class="panel">
-    <h3>Align <small>(one shape aligns to the slide)</small></h3>
-    <div class="grid three">
-      <button data-layout="align-left">⇤ Left</button>
-      <button data-layout="align-center">↔ Center</button>
-      <button data-layout="align-right">⇥ Right</button>
-      <button data-layout="align-top">⤒ Top</button>
-      <button data-layout="align-middle">↕ Middle</button>
-      <button data-layout="align-bottom">⤓ Bottom</button>
+  <!-- ICONS -->
+  <section id="p-ic" class="panel">
+    <input id="ic-search" class="search" type="search" placeholder="Search 4,800+ icons (e.g. coffee, store, chart)" />
+    <div class="row">
+      <select id="ic-cat"><option value="">All categories</option></select>
+      <select id="ic-size" title="Size"><option value="36">Small</option><option value="54" selected>Medium</option><option value="80">Large</option></select>
     </div>
-    <h3>Spacing</h3>
-    <div class="grid">
-      <button data-layout="dist-h">Distribute across</button>
-      <button data-layout="dist-v">Distribute down</button>
-      <button data-layout="stack-h">Side by side, 0.2" gap</button>
-      <button data-layout="stack-v">Stacked, 0.2" gap</button>
+    <div class="row swatches" id="ic-colors" title="Color"></div>
+    <div class="row seg" id="ic-style">
+      <button data-style="plain" class="on" title="Plain icon">Plain</button>
+      <button data-style="circle" title="Icon in a filled circle">Circle</button>
+      <button data-style="ring" title="Icon in an outline circle">Ring</button>
+      <button data-style="square" title="Icon in a rounded square">Square</button>
     </div>
-    <h3>Size <small>(matches the first shape you selected)</small></h3>
-    <div class="grid three">
-      <button data-layout="same-w">Same width</button>
-      <button data-layout="same-h">Same height</button>
-      <button data-layout="same-size">Same size</button>
-    </div>
-    <h3>More</h3>
-    <div class="grid">
-      <button data-layout="swap">Swap two shapes</button>
-      <button data-layout="snap">Snap to grid</button>
-      <button data-layout="margins">Fit to content width</button>
-    </div>
+    <p class="hint" id="ic-count"></p>
+    <div id="ic-grid" class="icons"></div>
+    <button id="ic-more" class="ghost" hidden>Show more</button>
+    <p class="fine">Icons: Tabler Icons (MIT licence).</p>
   </section>
 
-  <section id="p-data" class="panel">
+  <!-- LAYOUT -->
+  <section id="p-lay" class="panel">
+    <div class="row"><label class="inline">Align to
+      <select id="anchor"><option value="selection">Selection</option><option value="first">First selected</option><option value="slide">Slide</option></select></label></div>
+    <h3>Align</h3>
+    <div class="tiles icons-row" id="lay-align"></div>
+    <h3>Distribute &amp; stack</h3>
+    <div class="tiles icons-row" id="lay-space"></div>
+    <div class="row"><label class="inline">Gap (inches) <input id="gap" type="number" step="0.05" min="0" value="0.2" /></label>
+      <label class="inline">Grid columns <input id="gridcols" type="number" min="1" max="10" value="3" /></label></div>
+    <h3>Size</h3>
+    <div class="tiles icons-row" id="lay-size"></div>
+    <h3>Arrange</h3>
+    <div class="tiles icons-row" id="lay-arrange"></div>
+  </section>
+
+  <!-- TOOLS -->
+  <section id="p-tools" class="panel">
     <h3>Branded table</h3>
     <div class="row">
       <label>Rows <input id="tbl-rows" type="number" min="2" max="15" value="5" /></label>
       <label>Columns <input id="tbl-cols" type="number" min="2" max="8" value="4" /></label>
       <button id="tbl-insert" class="primary">Insert table</button>
     </div>
-    <h3>Charts</h3>
-    <p class="hint">PowerPoint add-ins can't create charts directly, so these insert library slides with native Deli-colored charts. Right-click a chart → Edit Data to use your numbers.</p>
+    <h3>Charts <small>(native, Deli colours)</small></h3>
     <div class="grid">
-      <button data-lib="267">Column, line, stacked, doughnut</button>
+      <button data-lib="267">Column · line · stacked · doughnut</button>
       <button data-lib="268">Waterfall bridge</button>
       <button data-lib="269">Tables with Harvey balls</button>
     </div>
-    <h3>Number format <small>(selected text boxes)</small></h3>
+    <h3>Text <small>(selected shapes)</small></h3>
+    <div class="tiles icons-row" id="txt-tools"></div>
+    <h3>Numbers <small>(selected shapes)</small></h3>
     <div class="grid three">
       <button data-num="thousands">1,234,567</button>
       <button data-num="rp">Rp1.2bn</button>
       <button data-num="pct">12.5%</button>
     </div>
+    <h3>Agenda wizard</h3>
+    <p class="hint">One agenda item per line. Creates one agenda slide per item, each highlighting its section, after the selected slide.</p>
+    <textarea id="agenda-items" rows="5">Where we are
+What the data says
+2027 targets
+Priorities and scorecard</textarea>
+    <button id="agenda-make" class="primary">Create agenda slides</button>
+    <h3>My slides</h3>
+    <p class="hint">Save the current slide to your personal library (on this computer) and insert it into any deck later.</p>
+    <div class="row"><input id="my-name" placeholder="Name, e.g. Branch table" /><button id="my-save">Save current slide</button></div>
+    <div id="my-list"></div>
   </section>
 
+  <!-- CHECK -->
   <section id="p-check" class="panel">
-    <p class="hint">Scans every slide for off-brand fonts and colors, text under 9pt, shapes off the slide, and leftover placeholders like [ ] or TBD.</p>
+    <p class="hint">Scans every slide for off-brand fonts and colours, text under 9pt, shapes off the slide, and leftover placeholders like [ ] or TBD.</p>
     <div class="row">
       <button id="check" class="primary">Run brand check</button>
-      <button id="fix" disabled>Fix fonts &amp; colors</button>
+      <button id="fix" disabled>Fix fonts &amp; colours</button>
     </div>
     <div id="issues"></div>
   </section>
@@ -110,6 +126,7 @@
   <footer id="status" class="status">Loading…</footer>
 
   <script src="core.js"></script>
+  <script src="elements.js"></script>
   <script src="taskpane.js"></script>
 </body>
 </html>

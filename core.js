@@ -23,8 +23,13 @@
   }
 
   /** Returns new {left, top} for each shape. With one shape, aligns to the slide. */
-  function align(shapes, mode) {
-    const ref = shapes.length === 1 ? { left: 0, top: 0, right: SLIDE.w, bottom: SLIDE.h, width: SLIDE.w, height: SLIDE.h } : bounds(shapes);
+  // anchor: "selection" (default), "first" (first selected shape) or "slide". One shape always aligns to the slide.
+  function align(shapes, mode, anchor) {
+    const slide = { left: 0, top: 0, right: SLIDE.w, bottom: SLIDE.h, width: SLIDE.w, height: SLIDE.h };
+    const f = shapes[0];
+    const ref = shapes.length === 1 || anchor === "slide" ? slide
+      : anchor === "first" ? { left: f.left, top: f.top, right: f.left + f.width, bottom: f.top + f.height, width: f.width, height: f.height }
+      : bounds(shapes);
     return shapes.map((s) => {
       const p = { left: s.left, top: s.top };
       if (mode === "left") p.left = ref.left;
@@ -69,6 +74,16 @@
       width: mode === "height" ? s.width : ref.width,
       height: mode === "width" ? s.height : ref.height,
     }));
+  }
+
+  /** Arrange shapes in a grid of `cols` columns (reading order by position), keeping the first shape's corner. */
+  function grid(shapes, cols, gap) {
+    const order = shapes.map((s, i) => i).sort((a, b) => (shapes[a].top - shapes[b].top) || (shapes[a].left - shapes[b].left));
+    const cw = Math.max(...shapes.map((s) => s.width)), rh = Math.max(...shapes.map((s) => s.height));
+    const x0 = Math.min(...shapes.map((s) => s.left)), y0 = Math.min(...shapes.map((s) => s.top));
+    const out = shapes.map((s) => ({ left: s.left, top: s.top }));
+    order.forEach((i, k) => { out[i] = { left: x0 + (k % cols) * (cw + gap), top: y0 + Math.floor(k / cols) * (rh + gap) }; });
+    return out;
   }
 
   function swap(a, b) {
@@ -151,91 +166,6 @@
     return best;
   }
 
-  // ---------- Element specs ----------
-  // Each element is a list of primitives; the renderer turns them into PowerPoint shapes and groups them.
-  // prim: {kind:"shape"|"text"|"line", geom, x, y, w, h, fill, line, lineW, dash, text, font:{name,size,bold,italic,color}, align, valign, name}
-  const F = (size, color, extra) => Object.assign({ name: "Calibri", size, color }, extra || {});
-  const C = BRAND;
-
-  function harvey(pct, x, y, d) {
-    const p = [];
-    const ring = (fill) => ({ kind: "shape", geom: "Ellipse", x, y, w: d, h: d, fill, line: C.green, lineW: 1.25, name: "ring" });
-    if (pct <= 0) p.push(ring(C.white));
-    else if (pct >= 100) p.push(ring(C.green));
-    else if (pct === 25) { p.push(ring(C.green)); p.push({ kind: "shape", geom: "Pie", x, y, w: d, h: d, fill: C.white, line: null, name: "mask" }); p.push(Object.assign(ring(null), { name: "outline" })); }
-    else if (pct === 50) { p.push(ring(C.white)); p.push({ kind: "shape", geom: "FlowChartDelay", x: x + d / 2, y, w: d / 2, h: d, fill: C.green, line: null, name: "half" }); p.push(Object.assign(ring(null), { name: "outline" })); }
-    else { p.push(ring(C.white)); p.push({ kind: "shape", geom: "Pie", x, y, w: d, h: d, fill: C.green, line: null, rotation: 270, name: "fill" }); p.push(Object.assign(ring(null), { name: "outline" })); }
-    return p;
-  }
-
-  function pill(t, fill, color, x, y, w) {
-    return [{ kind: "shape", geom: "RoundRectangle", x, y, w, h: 26, fill, line: null, text: t, font: F(11, color, { bold: true }), align: "Center", valign: "Middle", name: "pill" }];
-  }
-
-  const ELEMENTS = {
-    harvey0: { label: "Harvey ball 0%", group: "Ratings", build: (x, y) => harvey(0, x, y, 28) },
-    harvey25: { label: "Harvey ball 25%", group: "Ratings", build: (x, y) => harvey(25, x, y, 28) },
-    harvey50: { label: "Harvey ball 50%", group: "Ratings", build: (x, y) => harvey(50, x, y, 28) },
-    harvey75: { label: "Harvey ball 75%", group: "Ratings", build: (x, y) => harvey(75, x, y, 28) },
-    harvey100: { label: "Harvey ball 100%", group: "Ratings", build: (x, y) => harvey(100, x, y, 28) },
-    checkYes: { label: "Check ✓", group: "Ratings", build: (x, y) => [{ kind: "shape", geom: "Ellipse", x, y, w: 28, h: 28, fill: C.green, line: null, text: "✓", font: F(14, C.white, { bold: true }), align: "Center", valign: "Middle", name: "check" }] },
-    checkNo: { label: "Cross ✗", group: "Ratings", build: (x, y) => [{ kind: "shape", geom: "Ellipse", x, y, w: 28, h: 28, fill: C.red, line: null, text: "✗", font: F(14, C.white, { bold: true }), align: "Center", valign: "Middle", name: "cross" }] },
-    checkPart: { label: "Partly –", group: "Ratings", build: (x, y) => [{ kind: "shape", geom: "Ellipse", x, y, w: 28, h: 28, fill: C.muted, line: null, text: "–", font: F(14, C.white, { bold: true }), align: "Center", valign: "Middle", name: "partly" }] },
-    lightGreen: { label: "Light: on track", group: "Ratings", build: (x, y) => [{ kind: "shape", geom: "Ellipse", x, y, w: 18, h: 18, fill: C.green, line: null, name: "light" }] },
-    lightAmber: { label: "Light: at risk", group: "Ratings", build: (x, y) => [{ kind: "shape", geom: "Ellipse", x, y, w: 18, h: 18, fill: C.gold, line: null, name: "light" }] },
-    lightRed: { label: "Light: off track", group: "Ratings", build: (x, y) => [{ kind: "shape", geom: "Ellipse", x, y, w: 18, h: 18, fill: C.red, line: null, name: "light" }] },
-    pillOn: { label: "Pill: On track", group: "Status", build: (x, y) => pill("On track", C.green, C.white, x, y, 94) },
-    pillRisk: { label: "Pill: At risk", group: "Status", build: (x, y) => pill("At risk", C.gold, C.green, x, y, 94) },
-    pillOff: { label: "Pill: Off track", group: "Status", build: (x, y) => pill("Off track", C.red, C.white, x, y, 94) },
-    pillDone: { label: "Pill: Done", group: "Status", build: (x, y) => pill("Done", C.sage, C.green, x, y, 94) },
-    marker: { label: "Number marker", group: "Status", params: ["n"], build: (x, y, o) => [{ kind: "shape", geom: "Ellipse", x, y, w: 30, h: 30, fill: C.green, line: null, text: String((o && o.n) || 1), font: F(13, C.white, { bold: true }), align: "Center", valign: "Middle", name: "marker" }] },
-    sticker: { label: "Sticker", group: "Callouts", params: ["text"], build: (x, y, o) => { const t = ((o && o.text) || "DRAFT").toUpperCase(); const red = /CONFIDENTIAL/.test(t); return [{ kind: "shape", geom: "RoundRectangle", x, y, w: 36 + t.length * 7.6, h: 27, fill: C.white, line: red ? C.red : C.gold, lineW: 1.25, text: t, font: F(10.5, red ? C.red : C.gold, { bold: true }), align: "Center", valign: "Middle", name: "sticker" }]; } },
-    takeaway: { label: "Key takeaway box", group: "Callouts", build: (x, y) => [{ kind: "shape", geom: "RoundRectangle", x, y, w: 547, h: 76, fill: C.green, line: null, text: "So what: one or two sentences with the conclusion and its number.", font: F(13, C.white), align: "Left", valign: "Middle", name: "takeaway" }] },
-    note: { label: "Note box", group: "Callouts", build: (x, y) => [{ kind: "shape", geom: "RoundRectangle", x, y, w: 547, h: 43, fill: C.goldLt, line: null, text: "Note: an assumption or caveat the reader must not miss.", font: F(12, C.ink), align: "Left", valign: "Middle", name: "note" }] },
-    source: { label: "Source line", group: "Callouts", build: () => [{ kind: "text", x: SLIDE.margin, y: 488, w: 871, h: 14, text: "Source: system or report, period covered. Note on definitions.", font: F(9, C.muted, { italic: true }), align: "Left", valign: "Top", name: "source" }] },
-    statDark: { label: "Stat card (dark)", group: "Numbers", build: (x, y) => [
-      { kind: "shape", geom: "RoundRectangle", x, y, w: 281, h: 108, fill: C.green, line: null, name: "card" },
-      { kind: "text", x: x + 22, y: y + 12, w: 240, h: 44, text: "~Rp109bn", font: F(30, C.gold, { name: "Cambria", bold: true }), align: "Left", valign: "Middle", name: "value" },
-      { kind: "text", x: x + 22, y: y + 62, w: 240, h: 20, text: "Headline number", font: F(13, C.white, { bold: true }), align: "Left", valign: "Top", name: "label" },
-      { kind: "text", x: x + 22, y: y + 82, w: 240, h: 18, text: "Context line", font: F(11, C.goldLt), align: "Left", valign: "Top", name: "context" }] },
-    statLight: { label: "Stat card (light)", group: "Numbers", build: (x, y) => [
-      { kind: "shape", geom: "RoundRectangle", x, y, w: 281, h: 108, fill: C.white, line: C.line, lineW: 0.75, name: "card" },
-      { kind: "text", x: x + 22, y: y + 12, w: 240, h: 44, text: "Rp180k", font: F(30, C.green, { name: "Cambria", bold: true }), align: "Left", valign: "Middle", name: "value" },
-      { kind: "text", x: x + 22, y: y + 62, w: 240, h: 20, text: "Supporting number", font: F(13, C.ink, { bold: true }), align: "Left", valign: "Top", name: "label" },
-      { kind: "text", x: x + 22, y: y + 82, w: 240, h: 18, text: "Context line", font: F(11, C.muted), align: "Left", valign: "Top", name: "context" }] },
-    process: { label: "Chevron process", group: "Structure", params: ["steps"], build: (x, y, o) => {
-      const n = Math.max(2, Math.min(7, (o && o.steps) || 4)), total = SLIDE.w - 2 * SLIDE.margin, w = total / n, p = [];
-      for (let i = 0; i < n; i++) p.push({ kind: "shape", geom: "Chevron", x: SLIDE.margin + i * w, y, w: w - 4, h: 46, fill: i === n - 1 ? C.gold : C.green, line: null, text: `Step ${i + 1}`, font: F(14, i === n - 1 ? C.green : C.white, { bold: true }), align: "Center", valign: "Middle", name: `step-${i + 1}` });
-      return p; } },
-    tracker: { label: "Section tracker", group: "Structure", params: ["steps", "current"], build: (x, y, o) => {
-      const n = Math.max(2, Math.min(8, (o && o.steps) || 5)), cur = Math.max(1, Math.min(n, (o && o.current) || 1)), p = [];
-      for (let i = 0; i < n; i++) p.push({ kind: "shape", geom: "Chevron", x: x + i * 58, y, w: 60, h: 24, fill: i + 1 === cur ? C.green : C.sage, line: null, name: `tracker-${i + 1}` });
-      return p; } },
-    matrix: { label: "2x2 matrix", group: "Structure", build: (x, y) => {
-      const s = 300, p = [], names = ["Quick wins", "Big bets", "Fill-ins", "Avoid"];
-      for (let i = 0; i < 4; i++) { const cx = x + (i % 2) * (s / 2), cy = y + Math.floor(i / 2) * (s / 2); p.push({ kind: "shape", geom: "Rectangle", x: cx, y: cy, w: s / 2 - 3, h: s / 2 - 3, fill: i === 0 ? C.sage : C.white, line: C.line, lineW: 0.75, text: names[i], font: F(12, C.green, { bold: true }), align: "Left", valign: "Top", name: `q${i + 1}` }); }
-      p.push({ kind: "text", x, y: y + s + 4, w: s, h: 18, text: "Effort →", font: F(11, C.muted, { bold: true }), align: "Center", valign: "Top", name: "x-axis" });
-      p.push({ kind: "text", x: x - 70, y: y + s / 2 - 9, w: 64, h: 18, text: "Impact ↑", font: F(11, C.muted, { bold: true }), align: "Right", valign: "Middle", name: "y-axis" });
-      return p; } },
-    gantt: { label: "Gantt skeleton (12 months)", group: "Structure", params: ["rows"], build: (x, y, o) => {
-      const rows = Math.max(1, Math.min(8, (o && o.rows) || 4)), gx = 245, cw = (SLIDE.w - SLIDE.margin - gx) / 12, p = [];
-      const mo = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      mo.forEach((m, i) => { p.push({ kind: "text", x: gx + i * cw, y, w: cw, h: 18, text: m, font: F(10.5, C.muted, { bold: true }), align: "Center", valign: "Top", name: `month-${i + 1}` }); p.push({ kind: "line", x: gx + i * cw, y: y + 22, w: 0, h: rows * 46, line: C.line, lineW: 0.75, name: `grid-${i + 1}` }); });
-      for (let r = 0; r < rows; r++) { const ry = y + 34 + r * 46; p.push({ kind: "text", x: SLIDE.margin, y: ry, w: gx - SLIDE.margin - 8, h: 28, text: `Workstream ${r + 1}`, font: F(13, C.ink, { bold: true }), align: "Left", valign: "Middle", name: `row-${r + 1}` }); p.push({ kind: "shape", geom: "RoundRectangle", x: gx + (r * 2 % 10) * cw + 3, y: ry + 5, w: 3 * cw - 6, h: 18, fill: C.green, line: null, name: `bar-${r + 1}` }); }
-      return p; } },
-  };
-
-  /** Place an element: default position centres it on the slide content area. */
-  function buildElement(key, opts) {
-    const el = ELEMENTS[key];
-    if (!el) throw new Error("Unknown element " + key);
-    const probe = el.build(0, 0, opts);
-    const b = bounds(probe.map((p) => ({ left: p.x, top: p.y, width: p.w, height: p.h })));
-    const x = (opts && opts.x != null) ? opts.x : Math.round((SLIDE.w - b.width) / 2);
-    const y = (opts && opts.y != null) ? opts.y : Math.round(150);
-    return el.build(x, y, opts);
-  }
-
   // Branded table cell properties for PowerPoint.ShapeCollection.addTable (PowerPointApi 1.8)
   function tableSpec(rows, cols) {
     const values = [], cells = [];
@@ -250,6 +180,6 @@
     return { values, specificCellProperties: cells };
   }
 
-  const api = { BRAND, BRAND_FONTS, SLIDE, IN, bounds, align, distribute, stack, matchSize, swap, snap, parseNumber, formatNumber, isBrandColor, isBrandFont, checkDeck, nearestBrand, ELEMENTS, buildElement, tableSpec };
+  const api = { BRAND, BRAND_FONTS, SLIDE, IN, bounds, align, distribute, stack, grid, matchSize, swap, snap, parseNumber, formatNumber, isBrandColor, isBrandFont, checkDeck, nearestBrand, tableSpec };
   if (typeof module !== "undefined" && module.exports) module.exports = api; else root.DeliCore = api;
 })(typeof self !== "undefined" ? self : this);

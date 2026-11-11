@@ -62,11 +62,13 @@ If you have Node.js, you can do the same with: `npm install && node tools/build.
 ## For developers
 
 ```
-src/core.js          pure logic: layout math, number formats, brand check, element definitions
-src/taskpane.*       side panel (Office.js)
-src/commands.*       ribbon buttons that run without the panel
-tools/build.js       generates icons + manifest.xml for a given host
-test/                node test/core.test.js · node test/taskpane.mock.test.js (needs jsdom)
+core.js              (repo root) layout math, number formats, brand check
+elements.js          (repo root) 72 smart elements + SVG thumbnails
+taskpane.*           side panel: Elements, Icons, Layout, Tools, Check
+commands.*           ribbon buttons that run without the panel
+assets/icons.json    4,855 Tabler icons (MIT licence, see TABLER-ICONS-LICENSE.txt)
+addin-source/tools/build.js   generates ribbon icons + manifest.xml for a given host
+addin-source/test/   node addin-source/test/unit.test.js · panel.mock.test.js (needs jsdom)
 ```
 
-Add a new element by adding an entry to `ELEMENTS` in `src/core.js`. The panel button appears automatically.
+Add a new element with one `add(...)` line in `elements.js`; its thumbnail and button appear automatically.
