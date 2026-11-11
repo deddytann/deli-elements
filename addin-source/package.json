@@ -1,0 +1,21 @@
+{
+  "name": "deli-elements",
+  "version": "1.0.0",
+  "description": "Deli Elements PowerPoint add-in",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "node tools/build.js",
+    "test": "node test/core.test.js && node test/taskpane.mock.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jsdom": "^24.1.3",
+    "sharp": "^0.33.0"
+  },
+  "private": true
+}

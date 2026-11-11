@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deli Elements</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <link rel="stylesheet" href="taskpane.css" />
+</head>
+<body>
+  <header>
+    <img src="assets/logo-cream.png" alt="The Deli Group" class="logo" />
+    <div><strong>Deli Elements</strong><span>On-brand slide tools</span></div>
+  </header>
+
+  <nav>
+    <button class="tab on" data-panel="p-insert">Insert</button>
+    <button class="tab" data-panel="p-layout">Layout</button>
+    <button class="tab" data-panel="p-data">Tables &amp; charts</button>
+    <button class="tab" data-panel="p-check">Check</button>
+  </nav>
+
+  <section id="p-insert" class="panel on">
+    <details class="opts">
+      <summary>Element options</summary>
+      <label>Sticker text <input id="opt-text" value="DRAFT" /></label>
+      <label>Marker number <input id="opt-n" type="number" min="1" max="99" value="1" /></label>
+      <label>Steps <input id="opt-steps" type="number" min="2" max="8" value="4" /></label>
+      <label>Current step <input id="opt-current" type="number" min="1" max="8" value="1" /></label>
+      <label>Gantt rows <input id="opt-rows" type="number" min="1" max="8" value="4" /></label>
+    </details>
+    <div id="elements"></div>
+    <h3>Full slides from the library</h3>
+    <div class="grid">
+      <button data-lib="260">Agenda</button>
+      <button data-lib="261">Process</button>
+      <button data-lib="262">Gantt</button>
+      <button data-lib="263">2x2 &amp; pyramid</button>
+      <button data-lib="264">Driver tree</button>
+      <button data-lib="265">Options &amp; pros/cons</button>
+      <button data-lib="266">Stat cards &amp; KPIs</button>
+      <button data-lib="270">Icons</button>
+      <button data-lib="256">Cover</button>
+      <button data-lib="271">Closing</button>
+    </div>
+  </section>
+
+  <section id="p-layout" class="panel">
+    <h3>Align <small>(one shape aligns to the slide)</small></h3>
+    <div class="grid three">
+      <button data-layout="align-left">⇤ Left</button>
+      <button data-layout="align-center">↔ Center</button>
+      <button data-layout="align-right">⇥ Right</button>
+      <button data-layout="align-top">⤒ Top</button>
+      <button data-layout="align-middle">↕ Middle</button>
+      <button data-layout="align-bottom">⤓ Bottom</button>
+    </div>
+    <h3>Spacing</h3>
+    <div class="grid">
+      <button data-layout="dist-h">Distribute across</button>
+      <button data-layout="dist-v">Distribute down</button>
+      <button data-layout="stack-h">Side by side, 0.2" gap</button>
+      <button data-layout="stack-v">Stacked, 0.2" gap</button>
+    </div>
+    <h3>Size <small>(matches the first shape you selected)</small></h3>
+    <div class="grid three">
+      <button data-layout="same-w">Same width</button>
+      <button data-layout="same-h">Same height</button>
+      <button data-layout="same-size">Same size</button>
+    </div>
+    <h3>More</h3>
+    <div class="grid">
+      <button data-layout="swap">Swap two shapes</button>
+      <button data-layout="snap">Snap to grid</button>
+      <button data-layout="margins">Fit to content width</button>
+    </div>
+  </section>
+
+  <section id="p-data" class="panel">
+    <h3>Branded table</h3>
+    <div class="row">
+      <label>Rows <input id="tbl-rows" type="number" min="2" max="15" value="5" /></label>
+      <label>Columns <input id="tbl-cols" type="number" min="2" max="8" value="4" /></label>
+      <button id="tbl-insert" class="primary">Insert table</button>
+    </div>
+    <h3>Charts</h3>
+    <p class="hint">PowerPoint add-ins can't create charts directly, so these insert library slides with native Deli-colored charts. Right-click a chart → Edit Data to use your numbers.</p>
+    <div class="grid">
+      <button data-lib="267">Column, line, stacked, doughnut</button>
+      <button data-lib="268">Waterfall bridge</button>
+      <button data-lib="269">Tables with Harvey balls</button>
+    </div>
+    <h3>Number format <small>(selected text boxes)</small></h3>
+    <div class="grid three">
+      <button data-num="thousands">1,234,567</button>
+      <button data-num="rp">Rp1.2bn</button>
+      <button data-num="pct">12.5%</button>
+    </div>
+  </section>
+
+  <section id="p-check" class="panel">
+    <p class="hint">Scans every slide for off-brand fonts and colors, text under 9pt, shapes off the slide, and leftover placeholders like [ ] or TBD.</p>
+    <div class="row">
+      <button id="check" class="primary">Run brand check</button>
+      <button id="fix" disabled>Fix fonts &amp; colors</button>
+    </div>
+    <div id="issues"></div>
+  </section>
+
+  <footer id="status" class="status">Loading…</footer>
+
+  <script src="core.js"></script>
+  <script src="taskpane.js"></script>
+</body>
+</html>

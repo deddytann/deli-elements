@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
+  <Id>6f1d2b7e-3c4a-4d8e-9a5b-de11e1e2027a</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>The Deli Group</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Deli Elements"/>
+  <Description DefaultValue="On-brand slide elements, layout tools, branded tables and a brand check for The Deli Group."/>
+  <IconUrl DefaultValue="https://deddytann.github.io/deli-elements/assets/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://deddytann.github.io/deli-elements/assets/icon-64.png"/>
+  <SupportUrl DefaultValue="https://deddytann.github.io/deli-elements/taskpane.html"/>
+  <AppDomains>
+    <AppDomain>https://deddytann.github.io</AppDomain>
+  </AppDomains>
+  <Hosts>
+    <Host Name="Presentation"/>
+  </Hosts>
+  <Requirements>
+    <Sets DefaultMinVersion="1.1">
+      <Set Name="PowerPointApi" MinVersion="1.4"/>
+    </Sets>
+  </Requirements>
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://deddytann.github.io/deli-elements/taskpane.html"/>
+  </DefaultSettings>
+  <Permissions>ReadWriteDocument</Permissions>
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Hosts>
+      <Host xsi:type="Presentation">
+        <DesktopFormFactor>
+          <GetStarted>
+            <Title resid="GetStarted.Title"/>
+            <Description resid="GetStarted.Desc"/>
+            <LearnMoreUrl resid="Taskpane.Url"/>
+          </GetStarted>
+          <FunctionFile resid="Commands.Url"/>
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <CustomTab id="Deli.Tab">
+              <Group id="Deli.Main">
+                <Label resid="Main.Label"/>
+                <Icon><bt:Image size="16" resid="Icon.16"/><bt:Image size="32" resid="Icon.32"/><bt:Image size="80" resid="Icon.80"/></Icon>
+                <Control xsi:type="Button" id="Deli.Open">
+                  <Label resid="Open.Label"/>
+                  <Supertip><Title resid="Open.Label"/><Description resid="Open.Tip"/></Supertip>
+                  <Icon><bt:Image size="16" resid="Icon.16"/><bt:Image size="32" resid="Icon.32"/><bt:Image size="80" resid="Icon.80"/></Icon>
+                  <Action xsi:type="ShowTaskpane"><TaskpaneId>DeliElementsPane</TaskpaneId><SourceLocation resid="Taskpane.Url"/></Action>
+                </Control>
+              </Group>
+              <Group id="Deli.Align">
+                <Label resid="Align.Label"/>
+                <Icon><bt:Image size="16" resid="Icon.16"/><bt:Image size="32" resid="Icon.32"/><bt:Image size="80" resid="Icon.80"/></Icon>
+                <Control xsi:type="Button" id="Deli.alignLeft">
+                  <Label resid="alignLeft.Label"/>
+                  <Supertip><Title resid="alignLeft.Label"/><Description resid="alignLeft.Tip"/></Supertip>
+                  <Icon><bt:Image size="16" resid="alignLeft.16"/><bt:Image size="32" resid="alignLeft.32"/><bt:Image size="80" resid="alignLeft.80"/></Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>alignLeft</FunctionName></Action>
+                </Control>
+                <Control xsi:type="Button" id="Deli.alignCenter">
+                  <Label resid="alignCenter.Label"/>
+                  <Supertip><Title resid="alignCenter.Label"/><Description resid="alignCenter.Tip"/></Supertip>
+                  <Icon><bt:Image size="16" resid="alignCenter.16"/><bt:Image size="32" resid="alignCenter.32"/><bt:Image size="80" resid="alignCenter.80"/></Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>alignCenter</FunctionName></Action>
+                </Control>
+                <Control xsi:type="Button" id="Deli.alignRight">
+                  <Label resid="alignRight.Label"/>
+                  <Supertip><Title resid="alignRight.Label"/><Description resid="alignRight.Tip"/></Supertip>
+                  <Icon><bt:Image size="16" resid="alignRight.16"/><bt:Image size="32" resid="alignRight.32"/><bt:Image size="80" resid="alignRight.80"/></Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>alignRight</FunctionName></Action>
+                </Control>
+                <Control xsi:type="Button" id="Deli.alignTop">
+                  <Label resid="alignTop.Label"/>
+                  <Supertip><Title resid="alignTop.Label"/><Description resid="alignTop.Tip"/></Supertip>
+                  <Icon><bt:Image size="16" resid="alignTop.16"/><bt:Image size="32" resid="alignTop.32"/><bt:Image size="80" resid="alignTop.80"/></Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>alignTop</FunctionName></Action>
+                </Control>
+                <Control xsi:type="Button" id="Deli.alignMiddle">
+                  <Label resid="alignMiddle.Label"/>
+                  <Supertip><Title resid="alignMiddle.Label"/><Description resid="alignMiddle.Tip"/></Supertip>
+                  <Icon><bt:Image size="16" resid="alignMiddle.16"/><bt:Image size="32" resid="alignMiddle.32"/><bt:Image size="80" resid="alignMiddle.80"/></Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>alignMiddle</FunctionName></Action>
+                </Control>
+                <Control xsi:type="Button" id="Deli.alignBottom">
+                  <Label resid="alignBottom.Label"/>
+                  <Supertip><Title resid="alignBottom.Label"/><Description resid="alignBottom.Tip"/></Supertip>
+                  <Icon><bt:Image size="16" resid="alignBottom.16"/><bt:Image size="32" resid="alignBottom.32"/><bt:Image size="80" resid="alignBottom.80"/></Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>alignBottom</FunctionName></Action>
+                </Control>
+              </Group>
+              <Group id="Deli.Arrange">
+                <Label resid="Arrange.Label"/>
+                <Icon><bt:Image size="16" resid="Icon.16"/><bt:Image size="32" resid="Icon.32"/><bt:Image size="80" resid="Icon.80"/></Icon>
+                <Control xsi:type="Button" id="Deli.distH">
+                  <Label resid="distH.Label"/>
+                  <Supertip><Title resid="distH.Label"/><Description resid="distH.Tip"/></Supertip>
+                  <Icon><bt:Image size="16" resid="distH.16"/><bt:Image size="32" resid="distH.32"/><bt:Image size="80" resid="distH.80"/></Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>distH</FunctionName></Action>
+                </Control>
+                <Control xsi:type="Button" id="Deli.distV">
+                  <Label resid="distV.Label"/>
+                  <Supertip><Title resid="distV.Label"/><Description resid="distV.Tip"/></Supertip>
+                  <Icon><bt:Image size="16" resid="distV.16"/><bt:Image size="32" resid="distV.32"/><bt:Image size="80" resid="distV.80"/></Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>distV</FunctionName></Action>
+                </Control>
+                <Control xsi:type="Button" id="Deli.sameSize">
+                  <Label resid="sameSize.Label"/>
+                  <Supertip><Title resid="sameSize.Label"/><Description resid="sameSize.Tip"/></Supertip>
+                  <Icon><bt:Image size="16" resid="sameSize.16"/><bt:Image size="32" resid="sameSize.32"/><bt:Image size="80" resid="sameSize.80"/></Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>sameSize</FunctionName></Action>
+                </Control>
+                <Control xsi:type="Button" id="Deli.swapShapes">
+                  <Label resid="swapShapes.Label"/>
+                  <Supertip><Title resid="swapShapes.Label"/><Description resid="swapShapes.Tip"/></Supertip>
+                  <Icon><bt:Image size="16" resid="swapShapes.16"/><bt:Image size="32" resid="swapShapes.32"/><bt:Image size="80" resid="swapShapes.80"/></Icon>
+                  <Action xsi:type="ExecuteFunction"><FunctionName>swapShapes</FunctionName></Action>
+                </Control>
+              </Group>
+              <Label resid="Tab.Label"/>
+            </CustomTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <bt:Image id="Icon.16" DefaultValue="https://deddytann.github.io/deli-elements/assets/icon-16.png"/>
+        <bt:Image id="Icon.32" DefaultValue="https://deddytann.github.io/deli-elements/assets/icon-32.png"/>
+        <bt:Image id="Icon.64" DefaultValue="https://deddytann.github.io/deli-elements/assets/icon-64.png"/>
+        <bt:Image id="Icon.80" DefaultValue="https://deddytann.github.io/deli-elements/assets/icon-80.png"/>
+        <bt:Image id="alignLeft.16" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignLeft-16.png"/>
+        <bt:Image id="alignLeft.32" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignLeft-32.png"/>
+        <bt:Image id="alignLeft.80" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignLeft-80.png"/>
+        <bt:Image id="alignCenter.16" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignCenter-16.png"/>
+        <bt:Image id="alignCenter.32" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignCenter-32.png"/>
+        <bt:Image id="alignCenter.80" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignCenter-80.png"/>
+        <bt:Image id="alignRight.16" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignRight-16.png"/>
+        <bt:Image id="alignRight.32" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignRight-32.png"/>
+        <bt:Image id="alignRight.80" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignRight-80.png"/>
+        <bt:Image id="alignTop.16" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignTop-16.png"/>
+        <bt:Image id="alignTop.32" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignTop-32.png"/>
+        <bt:Image id="alignTop.80" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignTop-80.png"/>
+        <bt:Image id="alignMiddle.16" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignMiddle-16.png"/>
+        <bt:Image id="alignMiddle.32" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignMiddle-32.png"/>
+        <bt:Image id="alignMiddle.80" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignMiddle-80.png"/>
+        <bt:Image id="alignBottom.16" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignBottom-16.png"/>
+        <bt:Image id="alignBottom.32" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignBottom-32.png"/>
+        <bt:Image id="alignBottom.80" DefaultValue="https://deddytann.github.io/deli-elements/assets/alignBottom-80.png"/>
+        <bt:Image id="distH.16" DefaultValue="https://deddytann.github.io/deli-elements/assets/distH-16.png"/>
+        <bt:Image id="distH.32" DefaultValue="https://deddytann.github.io/deli-elements/assets/distH-32.png"/>
+        <bt:Image id="distH.80" DefaultValue="https://deddytann.github.io/deli-elements/assets/distH-80.png"/>
+        <bt:Image id="distV.16" DefaultValue="https://deddytann.github.io/deli-elements/assets/distV-16.png"/>
+        <bt:Image id="distV.32" DefaultValue="https://deddytann.github.io/deli-elements/assets/distV-32.png"/>
+        <bt:Image id="distV.80" DefaultValue="https://deddytann.github.io/deli-elements/assets/distV-80.png"/>
+        <bt:Image id="sameSize.16" DefaultValue="https://deddytann.github.io/deli-elements/assets/sameSize-16.png"/>
+        <bt:Image id="sameSize.32" DefaultValue="https://deddytann.github.io/deli-elements/assets/sameSize-32.png"/>
+        <bt:Image id="sameSize.80" DefaultValue="https://deddytann.github.io/deli-elements/assets/sameSize-80.png"/>
+        <bt:Image id="swapShapes.16" DefaultValue="https://deddytann.github.io/deli-elements/assets/swapShapes-16.png"/>
+        <bt:Image id="swapShapes.32" DefaultValue="https://deddytann.github.io/deli-elements/assets/swapShapes-32.png"/>
+        <bt:Image id="swapShapes.80" DefaultValue="https://deddytann.github.io/deli-elements/assets/swapShapes-80.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://deddytann.github.io/deli-elements/taskpane.html"/>
+        <bt:Url id="Commands.Url" DefaultValue="https://deddytann.github.io/deli-elements/commands.html"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="Tab.Label" DefaultValue="Deli"/>
+        <bt:String id="Main.Label" DefaultValue="Deli Elements"/>
+        <bt:String id="Align.Label" DefaultValue="Align"/>
+        <bt:String id="Arrange.Label" DefaultValue="Arrange"/>
+        <bt:String id="Open.Label" DefaultValue="Elements"/>
+        <bt:String id="GetStarted.Title" DefaultValue="Deli Elements is ready"/>
+        <bt:String id="alignLeft.Label" DefaultValue="Left"/>
+        <bt:String id="alignCenter.Label" DefaultValue="Center"/>
+        <bt:String id="alignRight.Label" DefaultValue="Right"/>
+        <bt:String id="alignTop.Label" DefaultValue="Top"/>
+        <bt:String id="alignMiddle.Label" DefaultValue="Middle"/>
+        <bt:String id="alignBottom.Label" DefaultValue="Bottom"/>
+        <bt:String id="distH.Label" DefaultValue="Across"/>
+        <bt:String id="distV.Label" DefaultValue="Down"/>
+        <bt:String id="sameSize.Label" DefaultValue="Same size"/>
+        <bt:String id="swapShapes.Label" DefaultValue="Swap"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="Open.Tip" DefaultValue="Open the Deli Elements panel: insert elements, layout tools, branded tables and a brand check."/>
+        <bt:String id="GetStarted.Desc" DefaultValue="Open the Deli tab on the ribbon and click Elements."/>
+        <bt:String id="alignLeft.Tip" DefaultValue="Align selected shapes to the leftmost edge (one shape: to the slide)."/>
+        <bt:String id="alignCenter.Tip" DefaultValue="Center selected shapes horizontally."/>
+        <bt:String id="alignRight.Tip" DefaultValue="Align selected shapes to the rightmost edge."/>
+        <bt:String id="alignTop.Tip" DefaultValue="Align selected shapes to the top edge."/>
+        <bt:String id="alignMiddle.Tip" DefaultValue="Center selected shapes vertically."/>
+        <bt:String id="alignBottom.Tip" DefaultValue="Align selected shapes to the bottom edge."/>
+        <bt:String id="distH.Tip" DefaultValue="Equal horizontal gaps between 3 or more shapes."/>
+        <bt:String id="distV.Tip" DefaultValue="Equal vertical gaps between 3 or more shapes."/>
+        <bt:String id="sameSize.Tip" DefaultValue="Resize to match the first selected shape."/>
+        <bt:String id="swapShapes.Tip" DefaultValue="Swap the positions of two shapes."/>
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>
