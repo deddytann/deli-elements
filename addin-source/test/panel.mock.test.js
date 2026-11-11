@@ -80,7 +80,7 @@ async function main() {
   // search filters
   const s = doc.getElementById("el-search"); s.value = "harvey"; s.dispatchEvent(new w.Event("input")); await new Promise((r) => setTimeout(r, 200));
   assert.strictEqual(doc.querySelectorAll("#el-gallery .tile").length, 5);
-  for (const btn of doc.querySelectorAll("[data-logo]")) await click(btn);
+  for (const tone of doc.querySelectorAll("#logo-tone button")) { await click(tone); for (const btn of doc.querySelectorAll("#logo-tiles [data-img]")) { assert(/assets\/.+-(green|cream)\.png$/.test(btn.querySelector("img").getAttribute("src")), "logo src " + btn.querySelector("img").getAttribute("src")); assert(fs.existsSync(path.join(ROOT, btn.querySelector("img").getAttribute("src"))), "file for " + btn.title); await click(btn, "insert " + btn.title); } }
   for (const btn of doc.querySelectorAll("[data-lib]")) await click(btn);
   // Icons
   doc.querySelector('[data-panel="p-ic"]').click(); await tick(); await tick();

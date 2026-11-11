@@ -25,10 +25,18 @@
   <section id="p-el" class="panel on">
     <input id="el-search" class="search" type="search" placeholder="Search elements (e.g. harvey, gantt, funnel)" />
     <div id="el-gallery"></div>
-    <h3>Logo</h3>
-    <div class="tiles">
-      <button class="tile" data-logo="green" title="Deli logo (green, for light slides)"><img src="assets/logo-green.png" alt="" /></button>
-      <button class="tile dark" data-logo="cream" title="Deli logo (cream, for dark slides)"><img src="assets/logo-cream.png" alt="" /></button>
+    <h3>Brand logos</h3>
+    <div class="row seg" id="logo-tone">
+      <button data-tone="green" class="on" title="For light slides">For light slides</button>
+      <button data-tone="cream" title="For dark slides">For dark slides</button>
+    </div>
+    <div class="tiles logos" id="logo-tiles">
+      <button class="tile" data-img="logo" data-w="110" title="The Deli Group"><img alt="The Deli Group" /></button>
+      <button class="tile" data-img="brands/delibakes" data-w="120" title="The Deli Bakes"><img alt="The Deli Bakes" /></button>
+      <button class="tile" data-img="brands/squareroom" data-w="140" title="The Square Room"><img alt="The Square Room" /></button>
+      <button class="tile" data-img="brands/butterhouse" data-w="110" title="The Butter House"><img alt="The Butter House" /></button>
+      <button class="tile" data-img="brands/roastery" data-w="140" title="The Deli Roastery"><img alt="The Deli Roastery" /></button>
+      <button class="tile wide" data-img="brands/brand-row" data-w="430" title="All four brands in a row"><img alt="Brand row" /></button>
     </div>
     <details class="more">
       <summary>Full slides from the library</summary>

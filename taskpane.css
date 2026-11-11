@@ -58,3 +58,6 @@ textarea { width: 100%; resize: vertical; }
 .status { position: fixed; bottom: 0; left: 0; right: 0; padding: 8px 14px; font-size: 12px; background: #fff; border-top: 1px solid var(--line); color: var(--muted); }
 .status.ok { color: var(--green); }
 .status.err { color: var(--red); }
+.logos .tile img { max-height: 40px; }
+.logos .tile.wide { grid-column: span 2; }
+.logos.dark .tile { background: var(--green); }

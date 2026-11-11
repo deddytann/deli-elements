@@ -145,9 +145,17 @@ async function fileBase64(path) {
   for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
   return btoa(bin);
 }
-async function insertLogo(kind) {
-  const b64 = await fileBase64(`assets/logo-${kind}.png`);
-  insertImage("Deli logo", b64, Office.CoercionType.Image, { w: 110, h: 80 });
+let logoTone = "green";
+function logoPath(base) { return base === "logo" ? `assets/logo-${logoTone}.png` : `assets/${base}-${logoTone}.png`; }
+function refreshLogoTiles() {
+  $("logo-tiles").classList.toggle("dark", logoTone === "cream");
+  document.querySelectorAll("#logo-tiles [data-img]").forEach((b) => { b.querySelector("img").src = logoPath(b.dataset.img); });
+}
+async function insertLogo(btn) {
+  const path = logoPath(btn.dataset.img), w = Number(btn.dataset.w) || 120;
+  const img = btn.querySelector("img"), ratio = img.naturalWidth && img.naturalHeight ? img.naturalHeight / img.naturalWidth : 0.6;
+  const b64 = await fileBase64(path);
+  insertImage(btn.title + " logo", b64, Office.CoercionType.Image, { w, h: Math.round(w * ratio) });
 }
 
 const ICON_COLORS = [["#17362E", "Deli green"], ["#C9A46A", "Gold"], ["#4E7A6C", "Teal"], ["#1F2A27", "Ink"], ["#6B7570", "Muted"], ["#A4463B", "Alert red"], ["#FFFFFF", "White"]];
@@ -408,7 +416,9 @@ function wire() {
   renderMy();
   document.querySelectorAll("[data-num]").forEach((b) => (b.onclick = () => formatSelected(b.dataset.num)));
   document.querySelectorAll("[data-lib]").forEach((b) => (b.onclick = () => insertLibrarySlide(b.dataset.lib)));
-  document.querySelectorAll("[data-logo]").forEach((b) => (b.onclick = () => insertLogo(b.dataset.logo)));
+  document.querySelectorAll("#logo-tiles [data-img]").forEach((b) => (b.onclick = () => insertLogo(b)));
+  document.querySelectorAll("#logo-tone button").forEach((b) => (b.onclick = () => { logoTone = b.dataset.tone; document.querySelectorAll("#logo-tone button").forEach((x) => x.classList.toggle("on", x === b)); refreshLogoTiles(); }));
+  refreshLogoTiles();
   $("tbl-insert").onclick = insertTable;
   $("agenda-make").onclick = makeAgenda;
   $("my-save").onclick = saveMySlide;
