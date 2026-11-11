@@ -34,11 +34,16 @@ if errorlevel 1 (
   exit /b 1
 )
 
+echo  Setting The Deli Group template as the default for new presentations...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$ErrorActionPreference='Stop'; try { [Net.ServicePointManager]::SecurityProtocol='Tls12'; $base='https://deddytann.github.io/deli-elements/templates'; $t=Join-Path $env:APPDATA 'Microsoft\Templates'; New-Item -ItemType Directory -Force -Path $t | Out-Null; $b=Join-Path $t 'Blank.potx'; $bk=Join-Path $t 'Blank.before-deli.potx'; if ((Test-Path $b) -and -not (Test-Path $bk)) { Copy-Item $b $bk }; Invoke-WebRequest -UseBasicParsing ($base+'/Blank.potx') -OutFile $b; $k='HKCU:\Software\Microsoft\Office\16.0\PowerPoint\Options'; if (-not (Test-Path $k)) { New-Item -Path $k | Out-Null }; $p=(Get-ItemProperty -Path $k -Name PersonalTemplates -ErrorAction SilentlyContinue).PersonalTemplates; if (-not $p) { $p=Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'Custom Office Templates'; New-ItemProperty -Path $k -Name PersonalTemplates -PropertyType ExpandString -Value $p -Force | Out-Null }; $p=[Environment]::ExpandEnvironmentVariables($p); New-Item -ItemType Directory -Force -Path $p | Out-Null; Invoke-WebRequest -UseBasicParsing ($base+'/The_Deli_Group_Template.potx') -OutFile (Join-Path $p 'The Deli Group.potx'); exit 0 } catch { Write-Host $_; exit 1 }"
+if errorlevel 1 echo  Could not install the template (the add-in itself is installed).
+
 rem Clear PowerPoint's add-in cache so the newest version loads
 if exist "%LOCALAPPDATA%\Microsoft\Office\16.0\Wef" rd /s /q "%LOCALAPPDATA%\Microsoft\Office\16.0\Wef" 2>nul
 
 echo.
-echo  Done! Open PowerPoint and look for the "Deli" tab on the ribbon.
+echo  Done! Open PowerPoint: new presentations now start on The Deli Group template,
+echo  the full template is under New ^> Personal, and the "Deli" tab is on the ribbon.
 echo  If it isn't there: Home ^> Add-ins ^> More Add-ins ^> My Add-ins,
 echo  then choose Deli Elements under Developer Add-ins.
 echo.
