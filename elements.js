@@ -380,8 +380,8 @@
       if (!p.text) return "";
       const fs = (p.font && p.font.size || 12), col = (p.font && p.font.color) || C.ink, lines = String(p.text).split("\n");
       if (fs * scale < minPx) { // too small to read: draw grey text bars
-        const bw = Math.min(p.w * 0.7, String(lines[0]).length * fs * 0.5), bx = p.align === "Center" ? p.x + (p.w - bw) / 2 : p.x + (p.kind === "text" ? 0 : 8);
-        return lines.slice(0, 3).map((_, i) => `<rect x="${bx}" y="${p.y + (p.valign === "Middle" ? p.h / 2 - fs * 0.3 : fs * 0.4) + i * fs * 1.3}" width="${bw * (i ? 0.7 : 1)}" height="${fs * 0.6}" rx="${fs * 0.3}" fill="${col}" opacity="0.55"/>`).join("");
+        const bw = Math.max(18 / scale, Math.min(p.w * 0.7, String(lines[0]).length * fs * 0.5)), bh = Math.max(fs * 0.6, 2.4 / scale), bx = p.align === "Center" ? p.x + (p.w - bw) / 2 : p.x + (p.kind === "text" ? 0 : 8);
+        return lines.slice(0, 3).map((_, i) => `<rect x="${bx}" y="${p.y + (p.valign === "Middle" ? p.h / 2 - fs * 0.3 : fs * 0.4) + i * Math.max(fs * 1.3, bh * 1.8)}" width="${bw * (i ? 0.7 : 1)}" height="${bh}" rx="${bh / 2}" fill="${col}" opacity="0.6"/>`).join("");
       }
       const anchor = p.align === "Center" ? "middle" : p.align === "Right" ? "end" : "start";
       const tx = p.align === "Center" ? p.x + p.w / 2 : p.align === "Right" ? p.x + p.w : p.x + (p.kind === "text" ? 0 : 8);
