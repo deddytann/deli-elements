@@ -115,7 +115,7 @@ function manifest() {
                   <Label resid="Open.Label"/>
                   <Supertip><Title resid="Open.Label"/><Description resid="Open.Tip"/></Supertip>
                   <Icon><bt:Image size="16" resid="Icon.16"/><bt:Image size="32" resid="Icon.32"/><bt:Image size="80" resid="Icon.80"/></Icon>
-                  <Action xsi:type="ShowTaskpane"><TaskpaneId>DeliElementsPane</TaskpaneId><SourceLocation resid="Taskpane.Url"/></Action>
+                  <Action xsi:type="ShowTaskpane"><TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId><SourceLocation resid="Taskpane.Url"/></Action>
                 </Control>
               </Group>${group("Align", "Align", ["alignLeft", "alignCenter", "alignRight", "alignTop", "alignMiddle", "alignBottom"])}${group("Arrange", "Arrange", ["distH", "distV", "sameSize", "swapShapes"])}
               <Label resid="Tab.Label"/>

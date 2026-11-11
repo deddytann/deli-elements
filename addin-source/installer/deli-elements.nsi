@@ -6,7 +6,7 @@ Unicode true
 
 !define APPNAME "Deli Elements"
 !define COMPANY "The Deli Group"
-!define VERSION "2.0.0"
+!define VERSION "2.1.0"
 !define ADDIN_ID "6f1d2b7e-3c4a-4d8e-9a5b-de11e1e2027a"
 !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\DeliElements"
 !define WEF_DEV "Software\Microsoft\Office\16.0\WEF\Developer"
@@ -44,9 +44,9 @@ VIAddVersionKey "LegalCopyright" "${COMPANY}"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_INSTFILES
 !define MUI_FINISHPAGE_TITLE "Deli Elements is installed"
-!define MUI_FINISHPAGE_TEXT "Open PowerPoint and look for the Deli tab on the ribbon. New presentations now start on The Deli Group template."
+!define MUI_FINISHPAGE_TEXT "Every new presentation now starts on The Deli Group template with the Deli tab and panel loaded.$\r$\n$\r$\nTip: 'New Deli presentation' is also in your Start menu."
 !define MUI_FINISHPAGE_RUN
-!define MUI_FINISHPAGE_RUN_TEXT "Open PowerPoint now"
+!define MUI_FINISHPAGE_RUN_TEXT "Start a new Deli presentation now"
 !define MUI_FINISHPAGE_RUN_FUNCTION OpenPowerPoint
 !insertmacro MUI_PAGE_FINISH
 
@@ -66,7 +66,8 @@ Function WaitForPowerPoint
 FunctionEnd
 
 Function OpenPowerPoint
-  ExecShell "open" "powerpnt.exe"
+  ; start a new Deli deck: the template carries the add-in, so the Deli tab loads straight away
+  ExecShell "" "$INSTDIR\Deli presentation.potx"
 FunctionEnd
 
 Function .onInit
@@ -79,6 +80,8 @@ Section "Deli tab in PowerPoint (add-in)" SecAddin
   SetOutPath "$INSTDIR"
   File "manifest.xml"
   File "deli.ico"
+  File "Deli presentation.potx"
+  CreateShortCut "$SMPROGRAMS\New Deli presentation.lnk" "$INSTDIR\Deli presentation.potx" "" "$INSTDIR\deli.ico" 0
   WriteRegStr HKCU "${WEF_DEV}" "${ADDIN_ID}" "$INSTDIR\manifest.xml"
   ; clear PowerPoint's add-in cache so the newest version loads
   RMDir /r "$LOCALAPPDATA\Microsoft\Office\16.0\Wef"
@@ -155,6 +158,8 @@ Section "Uninstall"
 
   Delete "$INSTDIR\manifest.xml"
   Delete "$INSTDIR\deli.ico"
+  Delete "$INSTDIR\Deli presentation.potx"
+  Delete "$SMPROGRAMS\New Deli presentation.lnk"
   Delete "$INSTDIR\Uninstall Deli Elements.exe"
   RMDir "$INSTDIR"
   DeleteRegKey HKCU "${UNINST_KEY}"
