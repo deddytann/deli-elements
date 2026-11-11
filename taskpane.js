@@ -252,8 +252,8 @@ function buildElementButtons() {
 }
 
 Office.onReady((info) => {
-  if (info.host !== Office.HostType.PowerPoint) { status("Open this add-in inside PowerPoint.", "err"); return; }
   buildElementButtons();
+  if (info.host !== Office.HostType.PowerPoint) { status("Preview only: open the Deli tab inside PowerPoint to use these tools.", "err"); return; }
   document.querySelectorAll("[data-layout]").forEach((b) => (b.onclick = () => LAYOUT[b.dataset.layout]()));
   document.querySelectorAll("[data-num]").forEach((b) => (b.onclick = () => formatSelected(b.dataset.num)));
   document.querySelectorAll("[data-lib]").forEach((b) => (b.onclick = () => insertLibrarySlide(b.dataset.lib)));
