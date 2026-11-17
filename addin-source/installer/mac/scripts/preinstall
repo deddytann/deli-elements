@@ -1,0 +1,8 @@
+#!/bin/bash
+# Ask PowerPoint to quit so it picks up the add-in on next launch
+if pgrep -x "Microsoft PowerPoint" >/dev/null; then
+  USER_NAME=$(stat -f%Su /dev/console)
+  sudo -u "$USER_NAME" osascript -e 'tell application "Microsoft PowerPoint" to quit' >/dev/null 2>&1
+  sleep 3
+fi
+exit 0

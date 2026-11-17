@@ -1,0 +1,21 @@
+#!/bin/bash
+# Deli Elements for Mac - copies the add-in manifest and the Deli templates into the signed-in user's Office folders.
+SRC="/Library/Application Support/Deli Elements"
+USER_NAME=$(stat -f%Su /dev/console)
+[ -z "$USER_NAME" ] || [ "$USER_NAME" = "root" ] && USER_NAME="$USER"
+USER_HOME=$(dscl . -read "/Users/$USER_NAME" NFSHomeDirectory 2>/dev/null | awk '{print $2}')
+[ -z "$USER_HOME" ] && USER_HOME="/Users/$USER_NAME"
+
+WEF="$USER_HOME/Library/Containers/com.microsoft.Powerpoint/Data/Documents/wef"
+TPL="$USER_HOME/Library/Group Containers/UBF8T346G9.Office/User Content.localized/Templates.localized"
+
+as_user() { sudo -u "$USER_NAME" "$@"; }
+
+as_user mkdir -p "$WEF" "$TPL"
+as_user cp -f "$SRC/deli-elements.xml" "$WEF/deli-elements.xml"
+as_user cp -f "$SRC/Deli presentation.potx" "$TPL/Deli presentation.potx"
+as_user cp -f "$SRC/The Deli Group.potx" "$TPL/The Deli Group.potx"
+# Clear the add-in web cache so the newest panel loads
+as_user rm -rf "$USER_HOME/Library/Containers/com.microsoft.Powerpoint/Data/Library/Caches/com.microsoft.Office365ServiceV2" 2>/dev/null
+# Handy uninstaller on the Desktop is not added; it lives in Application Support.
+exit 0
